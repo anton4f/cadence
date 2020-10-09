@@ -211,13 +211,13 @@ func (wh *WorkflowHandler) Start() {
 
 	warmupTimer := time.NewTimer(warmUpDuration)
 	go func() {
-		<- warmupTimer.C
+		<-warmupTimer.C
 		wh.GetLogger().Warn("Service warmup duration has elapsed.")
 		if atomic.CompareAndSwapInt32(&wh.healthStatus, int32(HealthStatusWarmingUp), int32(HealthStatusOK)) {
 			wh.GetLogger().Warn("Warmup time has elapsed. Service is healthy.")
 		} else {
 			status := HealthStatus(atomic.LoadInt32(&wh.healthStatus))
-			wh.GetLogger().Warn( fmt.Sprintf("Warmup time has elapsed. Service status is: %v", status.String()))
+			wh.GetLogger().Warn(fmt.Sprintf("Warmup time has elapsed. Service status is: %v", status.String()))
 		}
 	}()
 }
@@ -253,7 +253,7 @@ func (wh *WorkflowHandler) Health(ctx context.Context) (*health.HealthStatus, er
 	msg := status.String()
 
 	if status != HealthStatusOK {
-		wh.GetLogger().Warn( fmt.Sprintf("Service status is: %v", msg))
+		wh.GetLogger().Warn(fmt.Sprintf("Service status is: %v", msg))
 	}
 
 	return &health.HealthStatus{
